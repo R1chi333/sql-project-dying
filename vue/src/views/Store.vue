@@ -8,9 +8,9 @@ async function getCards() {
   store.characters = data
 }
 let cartArray = []
-async function AddCart(x, name) {
+async function AddCart(x, name, img) {
   console.log(name)
-  cartArray.push([name, x]);
+  cartArray.push([name, x, img]);
   store.cartTotal = store.cartTotal + x
   const { data: { user } } = await supabase.auth.getUser()
   const { data, error } = await supabase
@@ -68,7 +68,7 @@ getCards()
         <div class="description">
           <h3 class="display-title">{{ character.name }}</h3>
           <h4 class="display-price">${{ character.price }}</h4>
-          <button class="btn" @click="AddCart(character.price, character.name)">ADD TO CART</button>
+          <button class="btn" @click="AddCart(character.price, character.name, character.image)">ADD TO CART</button>
         </div>
       </div>
     </div>

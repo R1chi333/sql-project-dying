@@ -1,19 +1,49 @@
-<script>
-import { useAuthStore } from '../stores/ah';
-import { storeToRefs } from 'pinia';
-
-export default {
-  setup() {
-    const authStore = useAuthStore()
-    const { currentUser } = storeToRefs(authStore)
-    return {
-      currentUser,
-    }
-  },
-}
-</script>
 <template>
     <div>
-        <h1>{{ currentUser }}</h1>
+      <h1>{{ userEmail }}</h1>
+      <p>{{ purchases }}</p>
     </div>
-</template>
+  </template>
+  
+  <script>
+  import { supabase } from '../lib/supabaseClient.js'
+  
+  export default {
+    data() {
+      return {
+        userEmail: null, 
+        purchases: null,
+      }
+    },
+    async mounted() {
+      await this.getUser() // Call getUser() when the component is mounted
+    },
+    methods: {
+      async getUser() {
+        const { data: { user } } = await supabase.auth.getUser()
+        this.userEmail = user.email
+
+        let { data: purchases, error } = await supabase
+        .from('purchases')
+        .select('character')
+        .eq('email', user.email);
+        if (error) {
+            console.error(error)
+        } else {
+            // you would probs make the cards here 
+            for (const row of purchases) {
+            const columnArray = row.character;
+            for (const subArray of columnArray) {
+            for (const element of subArray) {
+            console.log(element);
+    }
+  }
+}
+        }     
+      },
+    },
+  }
+</script>
+
+
+<!-- 01110010 01101001 01100011 01101000 01101001 01100101 00100000 01110111 01100001 01110011 00100000 01101000 01100101 01110010 01100101 -->
