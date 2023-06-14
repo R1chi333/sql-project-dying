@@ -13,14 +13,22 @@ let cartNameArray = []
 let cartPriceArray = []
 let cartImgArray = []
 
-
 async function AddCart(x, name, img) {
+  const { data: { user } } = await supabase.auth.getUser()
+  let { data: purchases} = await supabase
+    .from('purchases')
+    .select('character, price, img')
+    .eq('email', user.email)
+    .single()
+    cartNameArray = purchases.character
+    cartPriceArray = purchases.price
+    cartImgArray = purchases.img
+    console.log(cartImgArray, cartNameArray, cartPriceArray)
   console.log(name)
   cartNameArray.push([name]);
   cartPriceArray.push([x]);
   cartImgArray.push([img]);
   store.cartTotal = store.cartTotal + x
-  const { data: { user } } = await supabase.auth.getUser()
   const { data, error } = await supabase
     .from('purchases')
     .update({
