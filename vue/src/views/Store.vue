@@ -38,7 +38,6 @@ async function AddCart(x, name, img) {
 }
 getCards()
 console.log(store.characters)
-getCards()
 </script>
 
 <template>

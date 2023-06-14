@@ -25,20 +25,12 @@
 
         let { data: purchases, error } = await supabase
         .from('purchases')
-        .select('character')
+        .select('character', 'price', 'img')
         .eq('email', user.email);
         if (error) {
             console.error(error)
         } else {
             // you would probs make the cards here 
-            for (const row of purchases) {
-            const columnArray = row.character;
-            for (const subArray of columnArray) {
-            for (const element of subArray) {
-            console.log(element);
-    }
-  }
-}
         }     
       },
     },
