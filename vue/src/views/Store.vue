@@ -7,9 +7,22 @@ async function getCards() {
   const { data } = await supabase.from('character').select()
   store.characters = data
 }
-
-async function AddCart(x) {
+let cartArray = []
+async function AddCart(x, name) {
+  console.log(name)
+  cartArray.push([name, x]);
   store.cartTotal = store.cartTotal + x
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data, error } = await supabase
+    .from('purchases')
+    .update({character: cartArray })
+    .eq('email', user.email)
+    console.log(user.email)
+    if (error) {
+    console.error(error)
+  } else {
+    console.log('Item added to cart successfully')
+  }
 }
 getCards()
 console.log(store.characters)
@@ -19,6 +32,7 @@ getCards()
 <template>
   <div>
     <header>
+      <router-link :to="{ path: '/cart' }"> CART</router-link>
       <div class="logo"></div>
       <h1>Welcome to the Honkai: Star Rail Character Store!</h1>
       <div class="container">
@@ -54,7 +68,7 @@ getCards()
         <div class="description">
           <h3 class="display-title">{{ character.name }}</h3>
           <h4 class="display-price">${{ character.price }}</h4>
-          <button class="btn" @click="AddCart(character.price)">ADD TO CART</button>
+          <button class="btn" @click="AddCart(character.price, character.name)">ADD TO CART</button>
         </div>
       </div>
     </div>

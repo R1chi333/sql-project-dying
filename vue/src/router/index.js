@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import HomeView from '../views/HomeView.vue'
 import CreateAcc from '../views/Create.vue'
 import Request from '../views/RequestCard.vue'
+import Cart from '../views/Cart.vue'
 
 const routes = [
   {
@@ -26,6 +27,10 @@ const routes = [
   {
     path: '/request',
     component: Request
+  },
+  {
+    path: '/cart',
+    component: Cart
   }
 ]
 
